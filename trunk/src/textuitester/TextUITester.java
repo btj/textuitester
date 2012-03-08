@@ -169,7 +169,7 @@ public class TextUITester {
 				try {
 					actualLine = reader.readLine();
 				} catch (IOException e) {
-					throw new TextUITesterException("I/O erorr while reading: "+e, e);
+					throw new TextUITesterException("I/O error while reading: "+e, e);
 				}
 				if (actualLine == null)
 					throw new TextUITesterException("Process ended while reading");
