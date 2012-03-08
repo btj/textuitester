@@ -1,0 +1,48 @@
+<project default="dist">
+  
+  <uptodate property="have_jar" targetfile="textuitester.jar">
+    <srcfiles dir="src"/>
+  </uptodate>
+  
+  <uptodate property="have_javadoc" targetfile="docs">
+    <srcfiles dir="src"/>
+  </uptodate>
+  
+  <mkdir dir="bin"/>
+  
+  <target name="jar" unless="have_jar">
+    <javac srcdir="src" destdir="bin" includeAntRuntime="false" debug="yes"/>
+    <jar destfile="textuitester.jar">
+      <manifest>
+        <attribute name="Main-Class" value="textuitester.TextUITestScriptRunner"/>
+      </manifest>
+      <fileset dir="bin"/>
+    </jar>
+  </target>
+  
+  <target name="javadoc" unless="have_javadoc">
+    <delete dir="docs"/>
+    <javadoc sourcepath="src" destdir="docs" windowtitle="TextUITester API">
+      <link href="http://download.oracle.com/javase/7/docs/api/"/>
+    </javadoc>
+  </target>
+  
+  <target name="test">
+    <ant antfile="example.xml"/>
+  </target>
+  
+  <target name="dist" depends="jar,test,javadoc">
+    <zip destfile="textuitester.zip">
+      <fileset dir="." includes="textuitester.jar,License.txt,docs/**,example/**,example.xml"/>
+    </zip>
+  </target>
+  
+  <target name="clean">
+    <delete dir="bin"/>
+    <delete dir="docs"/>
+    <delete file="textuitester.jar"/>
+    <delete file="textuitester.zip"/>
+    <ant antfile="example.xml" target="clean"/>
+  </target>
+  
+</project>
