@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>textuitester by btj</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>textuitester</h1>
+        <p>A library for testing programs that have a text-based UI</p>
+
+        <p class="view"><a href="https://github.com/btj/textuitester">View the Project on GitHub <small>btj/textuitester</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/btj/textuitester/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/btj/textuitester/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/btj/textuitester">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>Provides two classes: <code>textuitester.TextUITester</code> and <code>textuitester.TextUITestScriptRunner</code>.</p>
+
+<p>Class <strong>TextUITester</strong> helps to send text lines to a process's standard input and to expect text lines from its standard output.</p>
+
+<p>For example:</p>
+
+<div class="highlight highlight-source-java"><pre>    @<span class="pl-smi">Test</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> test() {
+        <span class="pl-smi">TextUITester</span> tester <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">TextUITester</span>(<span class="pl-s"><span class="pl-pds">"</span>java -cp examplebin textuitesterexample.Echo<span class="pl-pds">"</span></span>);
+        tester<span class="pl-k">.</span>sendLine(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>);
+        tester<span class="pl-k">.</span>expectLine(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>);
+        tester<span class="pl-k">.</span>expectExit(<span class="pl-c1">0</span>);
+    }</pre></div>
+
+<p>Class <strong>TextUITestScriptRunner</strong> runs test scripts that look like this:</p>
+
+<pre><code>Ejava -cp examplebin textuitesterexample.Echo
+&lt;Hello World!
+&gt;Hello World!
+X0
+Ejava -cp examplebin textuitesterexample.Echo
+&lt;Hello again!
+&gt;Hello again!
+&lt;Bye World!
+&gt;Bye World!
+K
+</code></pre>
+
+<p>The first character of each line in the script is the <em>opcode</em>, the rest of the line is the <em>argument</em>.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Opcode</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">E</td>
+<td align="left">Start a new process under test</td>
+</tr>
+<tr>
+<td align="left">&lt;</td>
+<td align="left">Send the argument to the process under test</td>
+</tr>
+<tr>
+<td align="left">&gt;</td>
+<td align="left">Expect the argument from the process under test</td>
+</tr>
+<tr>
+<td align="left">X</td>
+<td align="left">Expect the process under test to terminate with the exit code given by the argument</td>
+</tr>
+<tr>
+<td align="left">K</td>
+<td align="left">Kill the process under test</td>
+</tr>
+<tr>
+<td align="left">T</td>
+<td align="left">Set the timeout (in milliseconds)</td>
+</tr>
+</tbody>
+</table>
+
+<p>The timeout determines how long the TextUITester waits for the process's expected behavior before it signals a failure. All failures are reported as TextUITesterException instances.</p>
+
+<p>Suppose the above script is stored as testScript1.txt in the same directory as your JUnit test suite. You can run it as follows:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">class</span> <span class="pl-en">Test1</span> {
+
+    <span class="pl-k">@Test</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">scriptTest</span>() <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {
+        <span class="pl-smi">TextUITestScriptRunner</span><span class="pl-k">.</span>runTestScript(<span class="pl-smi">Test1</span><span class="pl-k">.</span>class, <span class="pl-s"><span class="pl-pds">"</span>testScript1.txt<span class="pl-pds">"</span></span>);
+    }
+
+}</pre></div>
+
+<p>See also the example test suite and the Javadoc documentation included in the distribution, and the source code on this website.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/btj">btj</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
