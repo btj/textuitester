@@ -56,3 +56,14 @@ class Test1 {
 ```
 
 See also the example test suite and the Javadoc documentation included in the distribution, and the source code on this website.
+
+## Measuring coverage
+
+When using TextUiTester to test your program, you cannot use Eclipse's "Coverage As" functionality to measure the code coverage achieved by your test suite. Instead, proceed as follows:
+1. [Download](https://www.jacoco.org/jacoco/index.html) and unzip JaCoCo (Java Code Coverage).
+2. Specify the JaCoCo agent on the command line you use to launch your program. For example:
+   ``` 
+   java -javaagent:/Users/bartj/Downloads/jacoco-0.8.7/lib/jacocoagent.jar -cp examplebin textuitesterexample.Echo
+   ```
+3. The agent will create a file called `jacoco.exec` in the directory where you launched the program (typically the project directory). You can import it into Eclipse by right-clicking anywhere inside Eclipse's Coverage view (Window -> Show View -> Other -> Java -> Coverage) and choosing Import Session....
+4. After running the program again, simply right-click in the Coverage view and choose Refresh to load the new coverage report.
